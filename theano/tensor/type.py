@@ -435,7 +435,7 @@ class TensorType(Type):
         """Override `CLinkerType.c_init` """
         return """
         %(name)s = NULL;
-        type_num_%(name)s = %(type_num)s;
+        type_num_%(name)s = -1;
         """ % dict(sub, name=name, type_num=self.dtype_specs()[2])
 
     def c_extract(self, name, sub, check_input=True):
@@ -526,12 +526,10 @@ class TensorType(Type):
 
         if (%(name)s && !PyArray_ISALIGNED((PyArrayObject*) py_%(name)s)) {
             PyErr_Format(PyExc_NotImplementedError,
-                         "c_sync: expected an aligned array of type %%ld "
-                         "(%(type_num)s), got non-aligned array of type %%ld"
+                         "c_sync: expected an aligned array, got non-aligned array of type %%ld"
                          " with %%ld dimensions, with 3 last dims "
                          "%%ld, %%ld, %%ld"
                          " and 3 last strides %%ld %%ld, %%ld.",
-                         (long int) %(type_num)s,
                          (long int) type_num_%(name)s,
                          (long int) PyArray_NDIM(%(name)s),
                          (long int) PyArray_NDIM(%(name)s) >= 3 ?
