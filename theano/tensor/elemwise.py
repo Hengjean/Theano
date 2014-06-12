@@ -450,6 +450,8 @@ class Elemwise(OpenMPOp):
       Elemwise(log)(rand(3, 4, 5))
     """
 
+    check_input = True
+
     def __init__(self, scalar_op, inplace_pattern=None, name=None,
                  nfunc_spec=None, openmp=None):
         """
@@ -1174,8 +1176,13 @@ class Elemwise(OpenMPOp):
         return decl, checks, alloc, loop
 
     def c_code(self, node, nodename, inames, onames, sub):
+        declaration = ""
+        """for x in range(len(inames)):
+            name = inames[x]
+            type = node.inputs[x].type.dtype_specs()[1]
+            declaration += "typedef %(type)s dtype_%(name)s; \n" % locals()"""
         code = "\n".join(self._c_all(node, nodename, inames, onames, sub))
-        return code
+        return declaration + code
 
     def c_headers(self):
         return ['<vector>', '<algorithm>']

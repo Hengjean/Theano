@@ -87,7 +87,7 @@ class MultinomialFromUniform(Op):
             Py_XDECREF(%(z)s);
             %(z)s = (PyArrayObject*) PyArray_ZEROS(2,
                 PyArray_DIMS(%(pvals)s),
-                type_num_%(z)s,
+                PyArray_TYPE((PyArrayObject*) py_%(z)s),
                 0);
             if (!%(z)s)
             {

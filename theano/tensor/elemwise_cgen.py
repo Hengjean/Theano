@@ -150,7 +150,7 @@ def make_alloc(loop_orders, dtype, sub, fortran='0'):
         %(init_dims)s
         if (!%(olv)s) {
             %(olv)s = (PyArrayObject*)PyArray_EMPTY(%(nd)s, dims,
-                                                    type_num_%(olv)s,
+                                                    PyArray_TYPE((PyArrayObject*) py_%(olv)s),
                                                     %(fortran)s);
         }
         else {
@@ -162,7 +162,7 @@ def make_alloc(loop_orders, dtype, sub, fortran='0'):
                 // If we can't resize the ndarray we have we can allocate a new one.
                 PyErr_Clear();
                 Py_XDECREF(%(olv)s);
-                %(olv)s = (PyArrayObject*)PyArray_EMPTY(%(nd)s, dims, type_num_%(olv)s, 0);
+                %(olv)s = (PyArrayObject*)PyArray_EMPTY(%(nd)s, dims, PyArray_TYPE((PyArrayObject*) py_%(olv)s), 0);
             }
         }
         if (!%(olv)s) {
