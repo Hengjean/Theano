@@ -897,7 +897,7 @@ class Subtensor(Op):
         %(z)s = xview;
         """ % locals()
 
-        return decl + get_xview + checkNDim + build_view + finish_view
+        return decl + checkNDim + "{" + get_xview + build_view + finish_view + "}"
 
     def c_code_cache_version(self):
         hv = self.helper_c_code_cache_version()
